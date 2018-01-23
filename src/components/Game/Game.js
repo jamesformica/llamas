@@ -68,7 +68,7 @@ class Game extends Drawable {
 
   draw() {
     this.slates.map(t => t.draw());
-    this.llama.draw();
+    this.llama.draw(this.slates);
 
     if (canAddGrass(this.nextGrowTime, this.slates)) {
       this.addGrass();

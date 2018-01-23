@@ -1,3 +1,5 @@
+import find from 'lodash/find';
+
 import Drawable from '../../common/Drawable';
 
 const MOVE_DISTANCE = 0.5;
@@ -16,11 +18,18 @@ class Llama extends Drawable {
     this.destinationY = newY;
   }
 
-  draw() {
+  draw(slates) {
     if (this.x > this.destinationX) this.x -= MOVE_DISTANCE;
     if (this.x < this.destinationX) this.x += MOVE_DISTANCE;
     if (this.y > this.destinationY) this.y -= MOVE_DISTANCE;
     if (this.y < this.destinationY) this.y += MOVE_DISTANCE;
+
+    const isInside = find(slates, s => s.hasLoaded && s.findTileAtPos(this.x, this.y));
+
+    if (!isInside) {
+      this.destinationX = this.x;
+      this.destinationY = this.y;
+    }
 
     this.sketch.push();
     this.sketch.rectMode(this.sketch.CENTER);

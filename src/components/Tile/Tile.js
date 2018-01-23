@@ -15,8 +15,8 @@ class Tile extends Drawable {
   }
 
   isInside(mX, mY) {
-    const isInX = mX > this.x && mX < this.x + this.width;
-    const isInY = mY > this.y && mY < this.y + this.height;
+    const isInX = mX >= this.x && mX <= this.x + this.width;
+    const isInY = mY >= this.y && mY <= this.y + this.height;
 
     return isInX && isInY;
   }
