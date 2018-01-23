@@ -1,5 +1,5 @@
-export const getRandomNumber = (min, num) => (
-  Math.floor(Math.random() * num) + min * 1000
+export const getRandomNumber = (min, max) => (
+  Math.floor(Math.random() * (max - min)) + min
 );
 
 class Timer {
@@ -21,7 +21,7 @@ class Timer {
       }
 
       this.loop();
-    }, getRandomNumber(5, 5));
+    }, getRandomNumber(5, 10));
   }
 
 

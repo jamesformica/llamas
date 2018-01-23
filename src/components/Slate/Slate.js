@@ -52,6 +52,10 @@ class Slate extends Drawable {
     return find(this.tiles, t => t.isGrass && t.isInside(x, y))
   }
 
+  countGrass() {
+    return this.tiles.reduce((total, t) => t.isGrass ? ++total : total, 0);
+  }
+
   addGrass() {
     const randTile = getEmptyTile(this.tiles);
     if (randTile) {

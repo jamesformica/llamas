@@ -1,11 +1,13 @@
 import sample from 'lodash/sample';
 
 import Drawable from '../../common/Drawable';
-import Timer from '../../common/Timer';
 import Slate from '../Slate/Slate';
 import Llama from '../Llama/Llama';
+import { getRandomNumber } from '../../common/Timer';
 import { isGrassUnderLlama, eatGrassUnderLlama,
-  hasEatenTheGrass } from './helpers';
+  hasEatenTheGrass, canAddGrass } from './helpers';
+
+const ADD_GRASS_WAIT = 10000;
 
 class Game extends Drawable {
   constructor(sketch) {
@@ -13,14 +15,14 @@ class Game extends Drawable {
 
     this.llama = new Llama(sketch, sketch.width / 2, sketch.height / 2);
     this.slates = [];
-    this.addTile();
-
     this.eatTime = null;
-    this.timer = new Timer();
-    this.timer.subscribe(1, () => this.addGrass());
+    this.nextGrowTime = null;
+
+    this.addSlate();
+    this.setNextGrowTime();
   }
 
-  addTile() {
+  addSlate() {
     const nextTileNum = this.slates.length + 1;
     this.slates.push(new Slate(this.sketch, nextTileNum));
   }
@@ -28,6 +30,12 @@ class Game extends Drawable {
   addGrass() {
     const randSlate = sample(this.slates);
     randSlate.addGrass();
+  }
+
+  setNextGrowTime() {
+    const date = new Date();
+    date.setSeconds(date.getSeconds() + getRandomNumber(5, 15));
+    this.nextGrowTime = date;
   }
 
   mouseMoved(e) {
@@ -50,11 +58,17 @@ class Game extends Drawable {
     this.slates.map(t => t.draw());
     this.llama.draw();
 
+    if (canAddGrass(this.nextGrowTime, this.slates)) {
+      this.addGrass();
+      this.setNextGrowTime();
+    }
+
     if (isGrassUnderLlama(this.slates, this.llama)) {
       if (!this.eatTime) {
         this.eatTime = new Date();
       } else if (hasEatenTheGrass(this.eatTime)) {
         eatGrassUnderLlama(this.slates, this.llama);
+        this.setNextGrowTime();
       }
     } else {
       this.eatTime = null;

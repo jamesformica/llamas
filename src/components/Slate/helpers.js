@@ -54,7 +54,7 @@ export const getEmptyTile = (tiles) => {
   do {
     randTile = sample(tiles);
     counter++;
-  } while (randTile.isGrass && counter < this.tiles.length);
+  } while (randTile.isGrass && counter < tiles.length);
 
   if (randTile.isGrass) {
     return null;
