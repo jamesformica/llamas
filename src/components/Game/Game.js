@@ -8,6 +8,7 @@ import { isGrassUnderLlama, eatGrassUnderLlama,
   hasEatenTheGrass, canAddGrass } from './helpers';
 
 const ADD_GRASS_WAIT = 10000;
+const SLATE_MILESTONES = [2, 5, 10, 15, 20, 25, 30, 35];
 
 class Game extends Drawable {
   constructor(sketch) {
@@ -15,6 +16,7 @@ class Game extends Drawable {
 
     this.llama = new Llama(sketch, sketch.width / 2, sketch.height / 2);
     this.slates = [];
+    this.eatCount = 0;
     this.eatTime = null;
     this.nextGrowTime = null;
 
@@ -54,6 +56,16 @@ class Game extends Drawable {
     }
   }
 
+  eatGrass() {
+    eatGrassUnderLlama(this.slates, this.llama);
+    this.setNextGrowTime();
+    this.eatCount++;
+
+    if (SLATE_MILESTONES.includes(this.eatCount)) {
+      this.addSlate();
+    }
+  }
+
   draw() {
     this.slates.map(t => t.draw());
     this.llama.draw();
@@ -67,8 +79,7 @@ class Game extends Drawable {
       if (!this.eatTime) {
         this.eatTime = new Date();
       } else if (hasEatenTheGrass(this.eatTime)) {
-        eatGrassUnderLlama(this.slates, this.llama);
-        this.setNextGrowTime();
+        this.eatGrass();
       }
     } else {
       this.eatTime = null;
