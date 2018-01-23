@@ -37,6 +37,7 @@ class Tile extends Drawable {
     }
 
     if (this.isMouseOver) {
+      this.sketch.noStroke();
       this.sketch.fill('rgba(10, 150, 200, 0.6)');
       this.sketch.rect(this.x, this.y, this.width, this.height);
     }

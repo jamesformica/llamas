@@ -29,3 +29,13 @@ export const canAddGrass = (nextGrowDate, slates) => {
 
   return Math.ceil(totalTiles / 4) > grassCount;
 }
+
+export const getClickPos = (e, slates) => {
+  for (let i = 0; i < slates.length; i++) {
+    const tile = slates[i].findTileAtPos(e.x, e.y);
+    if (tile) {
+      return tile.getCentreCoords();
+    }
+  }
+  return null;
+}

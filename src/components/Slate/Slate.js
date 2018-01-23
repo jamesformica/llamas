@@ -28,11 +28,6 @@ class Slate extends Drawable {
     }
   }
 
-  mouseClicked(e) {
-    const tile = this.findTileAtPos(e.x, e.y);
-    if (tile) return tile.getCentreCoords();
-  }
-
   isGrassAtPos(x, y) {
     return !!this.findGrassAtPos(x, y);
   }

@@ -1,13 +1,13 @@
 import sample from 'lodash/sample';
+import find from 'lodash/find';
 
 import Drawable from '../../common/Drawable';
 import Slate from '../Slate/Slate';
 import Llama from '../Llama/Llama';
 import { getRandomNumber } from '../../common/Timer';
 import { isGrassUnderLlama, eatGrassUnderLlama,
-  hasEatenTheGrass, canAddGrass } from './helpers';
+  hasEatenTheGrass, canAddGrass, getClickPos } from './helpers';
 
-const ADD_GRASS_WAIT = 10000;
 const SLATE_MILESTONES = [2, 5, 10, 15, 20, 25, 30, 35];
 
 class Game extends Drawable {
@@ -45,15 +45,8 @@ class Game extends Drawable {
   }
 
   mouseClicked(e) {
-    let result;
-    for (let i = 0; i < this.slates.length; i++) {
-      result = this.slates[i].mouseClicked(e);
-      if (result) break;
-    }
-
-    if (result) {
-      this.llama.moveLama(result.x, result.y);
-    }
+    const pos = getClickPos(e, this.slates);
+    pos && this.llama.moveLama(pos.x, pos.y);
   }
 
   eatGrass() {
